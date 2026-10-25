@@ -19,6 +19,8 @@ jobs:
         with:
           channel: stable
           cache: true
+      - name: Generate Android project scaffold
+        run: flutter create --platforms=android --org ir.vatanmsg --project-name app .
       - name: Get original Vatan app icon
         shell: bash
         run: |
@@ -44,6 +46,19 @@ jobs:
           PY
             echo "Fallback icon generated; no icon was found in original repo candidates."
           fi
+      - name: Allow network access for the existing Vatan API
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('android/app/src/main/AndroidManifest.xml')
+          text = p.read_text()
+          permission = '<uses-permission android:name="android.permission.INTERNET" />'
+          if permission not in text:
+              text = text.replace('<manifest ', '<manifest ', 1)
+              close = text.find('>')
+              text = text[:close+1] + '\\n    ' + permission + text[close+1:]
+              p.write_text(text)
+          PY
       - run: flutter pub get
       - run: dart run flutter_launcher_icons
       - run: dart format lib
