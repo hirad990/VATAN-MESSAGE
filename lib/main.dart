@@ -53,7 +53,7 @@ class _VatanAppState extends State<VatanApp> {
 }
 class Splash extends StatelessWidget { const Splash({super.key}); @override Widget build(BuildContext context)=>const Scaffold(body:Center(child:CircularProgressIndicator(color:vBlue))); }
 String tr(String lang,String fa,String en,String ar)=>lang=='en'?en:lang=='ar'?ar:fa;
-String userName(Map<String,dynamic> u)=>'\u0024{u['displayName']??u['display_name']??u['username']??'Vatan'}';
+String userName(Map<String,dynamic> u)=>(u['displayName']??u['display_name']??u['username']??'Vatan').toString();
 
 class AuthPage extends StatefulWidget {
  final VatanApi api; final String language; final Future<void> Function(Map<String,dynamic>) onAuthenticated;
