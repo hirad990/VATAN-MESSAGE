@@ -55,7 +55,8 @@ jobs:
           permission = '<uses-permission android:name="android.permission.INTERNET" />'
           if permission not in text:
               text = text.replace('<manifest ', '<manifest ', 1)
-              close = text.find('>')
+              start = text.find('<manifest')
+              close = text.find('>', start)
               text = text[:close+1] + '\\n    ' + permission + text[close+1:]
               p.write_text(text)
           PY
